@@ -42,7 +42,30 @@ def show_all_creatures():
         creatures = db.execute(sql, params).fetchall()
 
         return render_template("pages/creature_list.jinja", creatures=creatures)
+#-----------------------------------------------------------
+# search list page - Show all the creatures
+#-----------------------------------------------------------
+@app.get("/search")
+def process_search():
+    search_term = request.args.get('q', '')
+    search_match = f"%{search_term}"
+    with connect_db() as db:
+        sql = """
+            SELECT id, species, name
+            FROM creatures
+            WHERE name LIKE ?
+            OR species LIKE ?
+        """
+        params = (search_match, search_match)
+        creatures = db.execute(sql, params).fetchall()
 
+        return render_template(
+            "pages/creature_list.jinja", 
+            creatures=creatures, 
+            search_term=search_term
+            )
+    
+        print(creatures)
 
 #-----------------------------------------------------------
 # Help page - Show some help

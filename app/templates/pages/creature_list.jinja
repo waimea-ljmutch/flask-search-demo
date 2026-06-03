@@ -7,7 +7,24 @@
 
 {% block content %}
 
-    <h2>List of Creatures</h2>
+    {% if search_term %}
+        <h2>List of Creatures Matching '{{ search_term }}'</h2>
+    {% else %}
+        <h2> List of Creatures</h2>
+    {% endif %}
+
+    <form action="/search" method=""get>
+
+        <label>
+            Search for.....
+            <input type="text" name="q">
+        </label>
+
+        <button>Search</button>
+    
+    </form>
+
+    <p id="creature-count">{{ creatures | count }} creatures</p>
 
     <section id="creatures">
 
